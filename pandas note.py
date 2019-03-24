@@ -32,3 +32,18 @@ wic.to_excel('wic.xlsx', sheet_name='Total Women')
 #Write things to SQL file
 conn = sqlite3.connect("fires.sqlite")
 fires.head(10).to_sql("fires", conn)
+
+#Indexing and Selecting
+x = df['A']
+x = df.A
+x = df.A.iloc[0]
+x = review[:1]
+x = df.A.iloc[:10]
+x = df.A.head(10)
+x = df.loc[:9, 'A']
+x = df.iloc[[1, 2, 3, 5, 8]]  # select row 1, 2, 3, 5, 8 (start from 0)
+x = df.iloc[[0, 1, 10, 100], [0, 5, 6, 7]]  # select row 0, 1, 10, 100 and column 0, 5, 6, 7
+x = df.iloc[0:100, [0, 11]]
+x = df.query("country == 'Italy'")
+x = df.query("country == ['Australia', 'New Zealand'] and points > 94")
+
