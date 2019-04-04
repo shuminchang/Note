@@ -7,7 +7,7 @@
 # The interpretation of the data is more important than the tool that you use
 # histogram - for interval data with skew, a bar for a range of values
 # skewed data
-# nominal or ordinal, large or small, skewed or not - then decide which chart you use
+# nominal or ordinal, large or small, interval or not, skewed or not - then decide which chart you use
 
 reviews['province'].value_counts().head(10).plot.bar()
 (reviews['province'].value_counts().head(10) / len(reviews)).plot.bar()
@@ -17,3 +17,6 @@ review['points'].value_counts().sort_index().plot.area()
 reviews[reviews['price'] < 200]['price'].plot.hist()
 reviews['price'].plot.hist()
 reviews['points'].plot.hist()
+
+# downsample, weakly correlated
+# scatter plot - weak to overplotting, work better with small datasets
