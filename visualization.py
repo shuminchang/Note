@@ -45,3 +45,8 @@ wine_counts.plot.line()
 # A KDE plot expects that if there are 200 wine rated 85 and 400 rated 86, then the values in between, like 85.5, should smooth out to somewhere in between (say, 300). 
 # However, if the value in between can't occur (wine ratings of 85.5 are not allowed), then the KDE plot is fitting to something that doesn't exist. 
 # In these cases, use a line chart instead.
+
+# record-oriented format, tidy format
+# pandas plotting tools - for initial explorations
+# seaborn - for more sophisticated explorations
+
