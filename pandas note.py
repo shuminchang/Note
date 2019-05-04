@@ -47,3 +47,27 @@ x = df.iloc[0:100, [0, 11]]
 x = df.query("country == 'Italy'")
 x = df.query("country == ['Australia', 'New Zealand'] and points > 94")
 
+# Count unique value
+df.nunique()
+
+# type
+reviews.price.dtype  # column 'price' type
+reviews.dtypes # each column type
+reviews.points.astype('float64')  # transform to float data type
+reviews.index.dtype  # index's type
+
+# Missing values
+reviews.country.isnull()  # check null in column country
+reviews.region_2.fillna("Unknown")  # replace NaN with 'Unknown'
+reviews.taster_twitter_handle.replace("@kerinokeefe", "@kerino")  # replace non-missing values, replace '@kerinokeefe' to '@kerino'
+
+# count missing values
+missing_price_reviews = reviews[reviews.price.isnull()]
+n_missing_prices = len(missing_price_reviews)
+
+n_missing_prices = reviews.price.isnull().sum()
+
+n_missing_prices = pd.isnull(reviews.price).sum()
+
+
+
