@@ -75,5 +75,13 @@ n_missing_prices = reviews.price.isnull().sum()
 
 n_missing_prices = pd.isnull(reviews.price).sum()
 
+# Renaming
+reviews.rename(columns={'points': 'score'}) # rename column name 
+reviews.rename(index={0: 'firstEntry', 1: 'secondEntry'}) # rename index 0 and index 1
+reviews.rename_axis("wines", axis='rows').rename_axis("fields", axis='columns') # give name to column and index
+
+# Combining
+pd.concat([canadian_youtube, british_youtube]) # combine along axis = 0
+left.join(right, lsuffix='_CAN', rsuffix='_UK') # combine along axis = 1, and modify column name
 
 
