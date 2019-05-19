@@ -62,6 +62,16 @@ reviews.dtypes # each column type
 reviews.points.astype('float64')  # transform to float data type
 reviews.index.dtype  # index's type
 
+# change type
+df.column.astype('int64') # object, int64, float64
+pd.to_numeric(df.column)
+
+# drop
+df = df.drop('HDI for year', 1)  # drop column 'HDI for year'
+
+# replace
+df[' gdp_for_year ($) '] = [ i.replace(",","") for i in df[' gdp_for_year ($) '] ]  # remove ',' - thousand separator
+
 # Missing values
 reviews.country.isnull()  # check null in column country
 reviews.region_2.fillna("Unknown")  # replace NaN with 'Unknown'
@@ -79,6 +89,8 @@ n_missing_prices = pd.isnull(reviews.price).sum()
 reviews.rename(columns={'points': 'score'}) # rename column name 
 reviews.rename(index={0: 'firstEntry', 1: 'secondEntry'}) # rename index 0 and index 1
 reviews.rename_axis("wines", axis='rows').rename_axis("fields", axis='columns') # give name to column and index
+df.rename(str.lower, axis='columns') # lowercase the columns
+df.rename({1: 2, 2: 4}, axis='index') # rename index
 
 # Combining
 pd.concat([canadian_youtube, british_youtube]) # combine along axis = 0
