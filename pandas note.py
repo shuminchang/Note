@@ -56,6 +56,21 @@ x = df.query("country == ['Australia', 'New Zealand'] and points > 94")
 # Count unique value
 df.nunique()
 
+# Grouping
+reviews.groupby('points').points.count()
+reviews.groupby('points').price.min()
+reviews.groupby('winery').apply(lambda df: df.title.iloc[0])
+reviews.groupby(['country', 'province']).apply(lambda df: df.loc[df.points.argmax()])
+reviews.groupby(['country']).price.agg([len, min, max])
+countries_reviewed = reviews.groupby(['country', 'province']).description.agg([len])
+countries_reviewed.reset_index()
+
+# Sorting
+countries_reviewed.sort_values(by='len')
+countries_reviewed.sort_values(by='len', ascending=False)
+countries_reviewed.sort_index()
+countries_reviewed.sort_values(by=['country', 'len'])
+
 # type
 reviews.price.dtype  # column 'price' type
 reviews.dtypes # each column type
@@ -96,4 +111,6 @@ df.rename({1: 2, 2: 4}, axis='index') # rename index
 pd.concat([canadian_youtube, british_youtube]) # combine along axis = 0
 left.join(right, lsuffix='_CAN', rsuffix='_UK') # combine along axis = 1, and modify column name
 
-
+# show full dataframe
+pd.set_option('display.max_columns', number_you_need)
+pd.set_option('display.max_rows', number_you_need)
