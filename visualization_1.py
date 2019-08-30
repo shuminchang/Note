@@ -44,3 +44,4 @@ sns.kdeplot(data=iris_ver_data['Petal Length (cm)'], label="Iris-versicolor", sh
 sns.kdeplot(data=iris_vir_data['Petal Length (cm)'], label="Iris-virginica", shade=True)
 # style
 sns.set_style("dark") # dark, white, ticks, darkgrid, whitegrid
+# seaborn figure can be right clicked and save as an image file for your presentation or something.
