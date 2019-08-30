@@ -42,3 +42,5 @@ plt.legend()
 sns.kdeplot(data=iris_set_data['Petal Length (cm)'], label="Iris-setosa", shade=True)
 sns.kdeplot(data=iris_ver_data['Petal Length (cm)'], label="Iris-versicolor", shade=True)
 sns.kdeplot(data=iris_vir_data['Petal Length (cm)'], label="Iris-virginica", shade=True)
+# style
+sns.set_style("dark") # dark, white, ticks, darkgrid, whitegrid
