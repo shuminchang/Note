@@ -1,4 +1,7 @@
-# https://blog.techbridge.cc/2018/05/11/python-data-science-and-machine-learning-matplotlib-tutorial/
+'''
+Taiwanese tutorial
+https://blog.techbridge.cc/2018/05/11/python-data-science-and-machine-learning-matplotlib-tutorial/
+'''
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -39,7 +42,10 @@ ax = fig.add_axes([0.15, 0.1, 0.5, 0.3])
 ax.plot(x, y[:, 1], color='g') # choose another set of y
 ax.set_xticks([]) # without [] will show x ticks - too crowded
 
+'''
+Official tutorials
 # https://matplotlib.org/3.1.1/tutorials/introductory/pyplot.html
+'''
 import matplotlib.pyplot as plt
 plt.plot([1, 2, 3, 4]) # input a list for default (y), automatically generate x values [0, 1, 2, 3] (python ranges start with 0
 plt.plot([1, 2, 3, 4], [1, 4, 9, 16]) # input list for x, y
