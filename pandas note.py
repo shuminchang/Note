@@ -2,15 +2,19 @@
 import pandas as pd
 
 #To create DataFrame and Series by hand
+pd.DataFrame()
+pd.DataFrame({'': [], '': []}, index=['', ''])
 pd.DataFrame({'Yes': [50, 21], 'No': [131, 2]})  # keys for index of column, values for values, start from the first row
 pd.DataFrame({'Bob': ['I liked it.', 'It was awful.'], 'Sue': ['Pretty good.', 'Bland.']})  # can also input string
 pd.DataFrame({'Bob': ['I liked it.', 'It was awful.'], 'Sue': ['Pretty good.', 'Bland.']}, index=['Product A', 'Product B'])  # 'index': index for rows
+
+pd.Series([int, 'object'], index=['', ''], name='')  # index for index, name for Series's name, name can be num or string
 pd.Series([1, 2, 3, 4, 5])  # create series
 pd.Series([30, 35, 40], index=['2015 Sales', '2016 Sales', '2017 Sales'], name='Product A')
 
 #To read csv file
 wine_reviews = pd.read_csv("../input/wine-reviews/winemag-data-130k-v2.csv")  # read csv file with default index of row
-wine_reviews.shape
+wine_reviews.shape  # show (rows, columns) of dataframe
 wine_review = pd.read_csv("../input/wine-reviews/winemag-data-130k-v2.csv", index_col=0)  # read csv file with the first column as the index of row
 wine_reviews.head()
 
@@ -18,7 +22,9 @@ wine_reviews.head()
 wic = pd.read_excel("../input/publicassistance/xls_files_all/WICAgencies2013ytd.xls", sheet_name='Total Women')
 
 #To read SQL file
+# import sqlite3 library
 import sqlite3
+# create a connector between sqlite database and python
 conn = sqlite3.connect("../input/188-million-us-wildfires/FPA_FOD_20170508.sqlite")
 fires = pd.read_sql_query("SELECT * FROM fires", conn)
 fires.head()
@@ -39,19 +45,83 @@ wic.to_excel('wic.xlsx', sheet_name='Total Women') # write a excel file
 conn = sqlite3.connect("fires.sqlite")
 fires.head(10).to_sql("fires", conn)  # output to a SQL database  
 
-#Indexing and Selecting
-x = df['A']
-x = df.A
-x = df.A.iloc[0]
-x = review[:1]
-x = df.A.iloc[:10]
-x = df.A.head(10)
-x = df.loc[:9, 'A']
-x = df.iloc[[1, 2, 3, 5, 8]]  # select row 1, 2, 3, 5, 8 (start from 0)
-x = df.iloc[[0, 1, 10, 100], [0, 5, 6, 7]]  # select row 0, 1, 10, 100 and column 0, 5, 6, 7
-x = df.iloc[0:100, [0, 11]]
-x = df.query("country == 'Italy'")
-x = df.query("country == ['Australia', 'New Zealand'] and points > 94")
+'''
+Indexing and Selecting
+'''
+# Index-based selection(iloc)
+df['A']
+df.A
+df['A'][0]  # select column 'A', select first row
+df.iloc[0]  # select first row
+df.iloc[:, 0]  # select first column, select first value of rows
+df.iloc[:3, 0] = df.iloc[[0, 1, 2], 0]  # select first three row, select first column
+df.iloc[1:3, 0]  # select second and third row, select first column
+df.iloc[-5:0]  # select last five row
+
+# Label-based selection
+df.loc[0, 'country']  # select first row, select column 'country'
+df.loc[:, ['A', 'B', 'C']]  # select every row, selection column A, B, C
+
+# Manipulating the index
+df.set_index("title")  # set column 'title' as index
+
+# Conditional selection
+df.country == 'Italy'  # the value is 'Italy' will be True, else will be False
+df.loc[df.country == 'Italy']  # select every value in dataframe df which value of column 'country' is 'Italy'
+df.loc[(df.country == 'Italy') & (df.points >= 90)]  #  column 'country' = 'Italy' and column 'point' >= 90
+df.loc[(df.country == 'Italy') | (df.points >= 90)]  # '|' = 'or'
+df.loc[df.country.isin(['Italy', 'France'])]  # select multiple conditions
+df.loc[df.price.notnull()]  # select not null value in column 'price'
+
+# Assigning data
+df['new column'] = 'everyone'  # input 'everyone' in every row of column 'new column'
+df['index_backwards'] = range(len(columnA), 0, -1)  # input number from the number of the length of columnA to the first number, step = -1
+
+# Summary functions
+df.points.describe()
+df.points.mean()
+df.taster_name.unique()
+df.taster_name.value_counts()
+
+# Maps
+# Series.map
+review_points_mean = reviews.points.mean()
+reviews.points.map(lambda p: p - review_points_mean)
+
+# DataFrame.apply
+def remean_points(row):
+  row.points = row.points - review_points_mean
+  return row
+reviews.apply(remean_points, axis='columns')
+
+# faster way
+review_points_mean = reviews.points.mean()
+review.points - review_points_mean
+
+# an easy way of combining country and region
+reviews.country + " - " + reviews.region_1
+
+# >, <, ==,  faster, but not flexible
+# map, apply     slower, but flexible
+
+df.points.median()  # show median of column 'points'
+df.country.unique()  # show unique value in column 'country'
+df.country.value_counts()  # show the number of every row of every unique value in column 'country', desc
+df.price - df.price.mean()  # calculate every value in the column 'price' - mean of column 'price'
+
+bargain_idx = (df.points / df.price).idxmax()
+bargain_wine = df.loc[bargain_idx, 'title']  # Return index of first occurrence of maximum over requested axis. NA/null values are excluded.
+
+df.A.iloc[0]
+review[:1]
+df.A.iloc[:10]
+df.A.head(10)
+df.loc[:9, 'A']
+df.iloc[[1, 2, 3, 5, 8]]  # select row 1, 2, 3, 5, 8 (start from 0)
+df.iloc[[0, 1, 10, 100], [0, 5, 6, 7]]  # select row 0, 1, 10, 100 and column 0, 5, 6, 7
+df.iloc[0:100, [0, 11]]
+df.query("country == 'Italy'")
+df.query("country == ['Australia', 'New Zealand'] and points > 94")
 
 # Count unique value
 df.nunique()
