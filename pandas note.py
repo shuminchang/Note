@@ -104,6 +104,28 @@ reviews.country + " - " + reviews.region_1
 # >, <, ==,  faster, but not flexible
 # map, apply     slower, but flexible
 
+'''
+Grouping and sorting
+'''
+# https://pandas.pydata.org/pandas-docs/stable/user_guide/groupby.html - Groupby: split-apply-combine
+# https://pandas.pydata.org/pandas-docs/stable/user_guide/advanced.html - Multiindex/Advanced indexing
+# https://pandas.pydata.org/pandas-docs/stable/getting_started/basics.html - Advanced basic functionality
+# Grouping
+reviews.groupby('points').points.count()  # group by count of 'points' column, and show 'points' column
+reviews.groupby('points').price.min()  # group 'points' column, by min price, show price
+reviews.groupby('winery').apply(lambda df: df.title.iloc[0])  # group 'winery' column, show first title 
+reviews.groupby(['country', 'province']).apply(lambda df: df.loc[df.points.argmax()])  # get best wine in every province
+reviews.groupby(['country']).price.agg([len, min, max])
+# Multi-indexes
+countries_reviewed = reviews.groupby(['country', 'province']).description.agg([len])
+countries_reviewed.reset_index()
+# Sorting
+countries_reviewed = countries_reviewed.reset_index()
+countries_reviewed.sort_values(by='len', ascending=False)  # follow the order by 'len'
+countries_reviewed.sort_index()
+countries_reviewed.sort_values(by=['country', 'len'])
+-----------------------------------------------------------------------------------------------------------------
+
 df.points.median()  # show median of column 'points'
 df.country.unique()  # show unique value in column 'country'
 df.country.value_counts()  # show the number of every row of every unique value in column 'country', desc
