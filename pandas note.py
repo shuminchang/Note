@@ -112,6 +112,7 @@ Grouping and sorting
 # https://pandas.pydata.org/pandas-docs/stable/getting_started/basics.html - Advanced basic functionality
 # Grouping
 reviews.groupby('points').points.count()  # group by count of 'points' column, and show 'points' column
+reviews.groupby('points').size() # this result is equal to upper syntax
 reviews.groupby('points').price.min()  # group 'points' column, by min price, show price
 reviews.groupby('winery').apply(lambda df: df.title.iloc[0])  # group 'winery' column, show first title 
 reviews.groupby(['country', 'province']).apply(lambda df: df.loc[df.points.argmax()])  # get best wine in every province
@@ -125,6 +126,61 @@ countries_reviewed.sort_values(by='len', ascending=False)  # follow the order by
 countries_reviewed.sort_index()
 countries_reviewed.sort_values(by=['country', 'len'])
 -----------------------------------------------------------------------------------------------------------------
+'''
+Data types and Missing Data
+'''
+# https://pandas.pydata.org/pandas-docs/stable/getting_started/dsintro.html - intro to data structures
+# https://pandas.pydata.org/pandas-docs/stable/user_guide/missing_data.html - Working with missing data
+'''
+Data types: The data type for a column in a DataFrame or a Series = dtype
+'''
+reviews.price.dtype  # the dtype property of a specific column
+reviews.dtypes  # the dtype of every column in the dataset
+reviews.points.astype('float64')  # transform the points column from 'int64' into 'float64'
+reviews.index.dtype  # index's dtype
+'''
+Missing data
+'''
+# NaN =  Not a Number, float64 dtype
+reviews[reviews.country.isnull()]  # show every row which value of country column is NaN
+reviews.region_2.fillna("Unknown")  # replace each NaN in column 'region_2'with an "Unknown"
+# https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.fillna.html - fillna documents
+reviews.taster_twitter_handle.replace("@kerinokeefe", "@kerino")  # replace "@kerinokeefe" with "@kerino"
+reviews.price.isnull().sum()  # total NaN in price column
+reviews.price.isnull()  # show full value of price Series, NaN = True, not NaN = False
+reviews[reviews.price.isnull()]  # every row in reviews which price is NaN
+len(reviews[reviews.price.isnull()])  # total row of every row in reviews which price is NaN = total NaN in price column = reviews.price.isnull().sum()
+reviews.region_1.fillna("Unknown").value_counts().sort_values(ascending=False)  # replace NaN in region_1 with "Unknown", count the number of each value, sort in descending order
+'''
+Renaming and combining
+'''
+# https://pandas.pydata.org/pandas-docs/stable/getting_started/basics.html - Essential basic functionality
+# https://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html - Merge, join, concatenate
+'''
+Renaming
+'''
+reviews.rename(columns={'points': 'score'})  # change column name, points to score
+reviews.rename(index={0: 'firstEntry', 1: 'secondEntry'})  # change first and seond index name
+reviews.rename_axis("wines", axis='rows').rename_axis("fields", axis='columns')  # change the name of total rows and total columns
+reviews.rename(columns={'region_1': 'region', 'region_2': 'locale'})
+reviews.rename(columns=dict(region_1='region', region_2='locale'))
+'''
+Combining
+'''
+canadian_youtube = pd.read_csv('../input/youtube-new/CAvideos.csv')
+british_youtube = pd.read_csv("../input/youtube-new/GBvideos.csv')
+pd.concat([canadian_youtube, british_youtube])  # combing along with columns axis
+
+left = canadian_youtube.set_index(['title', 'trending_date'])
+right = british_youtube.set_index(['title', 'trending_date'])
+left.join(right, lsuffix='_CAN', rsuffix='_UK')  # combing from the right side of dataframe, left part add _CAN in the column name
+
+
+'''
+Other function
+'''
+pd.set_option('max_rows', 5)
+
 
 df.points.median()  # show median of column 'points'
 df.country.unique()  # show unique value in column 'country'
